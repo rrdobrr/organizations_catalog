@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: >
+      bash -c "
+        python app/prestart.py &&
+        uvicorn app.src.main:app --host 0.0.0.0 --port 8000 --reload &
+        while ! curl -s http://localhost:8000/docs > /dev/null; do
+          echo '⏳ Ожидаем готовности API...';
+          sleep 1;
+        done;
+        echo '✅ API готов. Загружаем тестовые данные...';
+        python app/test_data_upload.py;
+        wait
+      "
+
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgis/postgis:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "543:5432"  # ✅ наружу 5433, внутри 5432 (по стандарту)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d organizations_catalog"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
