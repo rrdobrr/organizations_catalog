@@ -27,7 +27,7 @@ docker-compose up --build
     - Эндпоинты: http://localhost:8000/docs#/
     - API_KEY: invite_me_to_work
 
-### Примеры координаты проверки метода geo-radius:
+### Примеры координат проверки метода geo-radius:
   - "latitude": 55.7575, "longitude": 37.6590
   - "latitude": 55.7340, "longitude": 37.4700 
   - "latitude": 55.6450, "longitude": 37.5455
