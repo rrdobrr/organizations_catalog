@@ -4,7 +4,7 @@
 ## Асинхронное REST API приложение
 
 ### Запуск проекта через Docker
-    - git clone https://github.com/yourname/organization_catalog.git
+    - git clone https://github.com/rrdobrr/organizations_catalog.git
     - cd organization_catalog
     - docker-compose up --build
 
